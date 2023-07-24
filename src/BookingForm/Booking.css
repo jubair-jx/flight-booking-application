@@ -1,0 +1,9 @@
+.banners {
+  background-image: url(../assets/img/Hero-Banner.webp);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: 50% 40%;
+  background-attachment: fixed;
+  font-family: "Inter", sans-serif;
+  height: 100vh;
+}
