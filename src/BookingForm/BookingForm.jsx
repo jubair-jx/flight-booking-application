@@ -1,22 +1,47 @@
-import React from "react";
+import React, { useState } from "react";
 import BookingTable from "../BookingTable/BookingTable";
+import frame from "../assets/img/icons/Frame.svg";
+import vector1 from "../assets/img/icons/Vector (1).svg";
+import vector3 from "../assets/img/icons/Vector (3).svg";
+import { useDispatch, useSelector } from "react-redux";
+import { addedBookings } from "../redux/actions";
 
 const BookingForm = () => {
+  const bookings = useSelector((state) => state.bookings);
+  const [formData, setFormData] = useState("");
+  const dispatch = useDispatch();
+  const handleOnSubmit = (e) => {
+    e.preventDefault();
+
+    dispatch(addedBookings(formData));
+  };
+  const handleSelectChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((preData) => ({
+      ...preData,
+      [name]: value,
+    }));
+  };
   return (
     <div>
       <section>
         <div className="mt-[160px] mx-4 md:mt-[160px] relative">
           <div className="bg-white rounded-md max-w-6xl w-full mx-auto">
-            <form className="first-hero lws-inputform">
+            <form
+              onSubmit={handleOnSubmit}
+              className="first-hero lws-inputform"
+            >
               <div className="des-from">
                 <p>Destination From</p>
                 <div className="flex flex-row">
-                  <img src="./img/icons/Frame.svg" alt="" />
+                  <img src={frame} alt="" />
                   <select
                     className="outline-none px-2 py-2 w-full"
                     name="from"
                     id="lws-from"
                     required
+                    value={formData.from}
+                    onChange={handleSelectChange}
                   >
                     <option value="" hidden>
                       Please Select
@@ -32,11 +57,13 @@ const BookingForm = () => {
               <div className="des-from">
                 <p>Destination To</p>
                 <div className="flex flex-row">
-                  <img src="./img/icons/Frame.svg" alt="" />
+                  <img src={frame} alt="" />
                   <select
                     className="outline-none px-2 py-2 w-full"
                     name="to"
                     id="lws-to"
+                    onChange={handleSelectChange}
+                    value={formData.to}
                     required
                   >
                     <option value="" hidden>
@@ -57,6 +84,8 @@ const BookingForm = () => {
                   className="outline-none px-2 py-2 w-full date"
                   name="date"
                   id="lws-date"
+                  value={formData.date}
+                  onChange={handleSelectChange}
                   required
                 />
               </div>
@@ -64,11 +93,13 @@ const BookingForm = () => {
               <div className="des-from">
                 <p>Guests</p>
                 <div className="flex flex-row">
-                  <img src="./img/icons/Vector (1).svg" alt="" />
+                  <img src={vector1} alt="" />
                   <select
                     className="outline-none px-2 py-2 w-full"
-                    name="guests"
+                    name="guest"
                     id="lws-guests"
+                    onChange={handleSelectChange}
+                    value={formData.guest}
                     required
                   >
                     <option value="" hidden>
@@ -85,11 +116,13 @@ const BookingForm = () => {
               <div className="des-from !border-r-0">
                 <p>Class</p>
                 <div className="flex flex-row">
-                  <img src="./img/icons/Vector (3).svg" alt="" />
+                  <img src={vector3} alt="" />
                   <select
                     className="outline-none px-2 py-2 w-full"
-                    name="ticketClass"
+                    name="category"
+                    value={formData.category}
                     id="lws-ticketClass"
+                    onChange={handleSelectChange}
                     required
                   >
                     <option value="" hidden>
@@ -101,7 +134,12 @@ const BookingForm = () => {
                 </div>
               </div>
 
-              <button className="addCity" type="submit" id="lws-addCity">
+              <button
+                disabled={bookings.length >= 3 ? true : false}
+                className="addCity"
+                type="submit"
+                id="lws-addCity"
+              >
                 <svg
                   width="15px"
                   height="15px"
